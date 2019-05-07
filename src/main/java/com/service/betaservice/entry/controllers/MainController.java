@@ -14,21 +14,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainController {
     @Autowired
     private UsersRepository usersRepository;
+    private UsersEntities usersEntities;
+
+    MainController(UsersEntities usersEntities){
+        this.usersEntities=usersEntities;
+    }
 
     @GetMapping(path = "/add")
-    public  @ResponseBody String addNewUser(@RequestParam int id){
-        UsersEntities usersEntities = new UsersEntities();
-
-        usersEntities.setId(id);
-       usersRepository.save(usersEntities);
-
-        return "Data saved";
+    public @ResponseBody
+    UsersEntities addNewUser(@RequestParam String fullName) {
+       // usersEntities.setId(3);
+        usersEntities.setFullName(fullName);
+        usersRepository.save(usersEntities);
+        return usersEntities;
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody Iterable<UsersEntities>getAllUsers(){
+    public @ResponseBody
+    Iterable<UsersEntities> getAllUsers() {
 
-       return usersRepository.findAll();
+        return usersRepository.findAll();
     }
 
 }
